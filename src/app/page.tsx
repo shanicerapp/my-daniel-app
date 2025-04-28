@@ -6,8 +6,9 @@ import type { Product } from "./ProductList";
 import ProductFilter from "./ProductFilter";
 import ShoeList, { initialShoes } from "./ShoeList";
 import ShoeFilter from "./ShoeFilter";
-// import UserFilter from "./UserFilter";
-// import UserList from "./UserList";
+import UserFilter from "./UserFilter";
+import UserList from "./UserList";
+import type { User } from "./UserList";
 
 const initialProducts: Product[] = [
   { id: 1, name: "Apple iPhone 14", price: 799 },
@@ -19,22 +20,22 @@ const initialProducts: Product[] = [
 export default function Home() {
   const [productSearchTerm, setProductSearchTerm] = useState("");
   const [shoeSearchTerm, setShoeSearchTerm] = useState("");
-  // const [userSearchTerm, setUserSearchTerm] = useState("");
+  const [userSearchTerm, setUserSearchTerm] = useState("");
 
-  // const url = "https://jsonplaceholder.typicode.com/users";
-  // const [users, setUsers] = useState([]);
+  const url = "https://jsonplaceholder.typicode.com/users";
+  const [users, setUsers] = useState<User[]>([]);
 
-  // const fetchInfo = () => {
-  //   return fetch(url)
-  //     .then((res) => res.json())
-  //     .then((d) => {
-  //       setUsers(d);
-  //     });
-  // };
+  const fetchInfo = () => {
+    return fetch(url)
+      .then((res) => res.json())
+      .then((d) => {
+        setUsers(d);
+      });
+  };
 
-  // useEffect(() => {
-  //   fetchInfo();
-  // }, []);
+  useEffect(() => {
+    fetchInfo();
+  }, []);
 
   const filteredProducts = initialProducts.filter((product) => {
     return product.name.toLowerCase().includes(productSearchTerm.toLowerCase());
@@ -50,9 +51,9 @@ export default function Home() {
     return !filteredShoes.includes(shoe);
   });
 
-  // const filteredUsers = users.filter((user) => {
-  //   return user.name.toLowerCase().includes(userSearchTerm.toLowerCase());
-  // });
+  const filteredUsers = users.filter((user) => {
+    return user.name.toLowerCase().includes(userSearchTerm.toLowerCase());
+  });
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -74,12 +75,12 @@ export default function Home() {
         <ShoeList shoes={filteredShoes} />
         <p>Excluded Shoes:</p>
         <ShoeList shoes={excludedShoes} />
-        {/* <h1 style={{ color: "green" }}>using JavaScript inbuilt FETCH API</h1>
+        <h1 style={{ color: "green" }}>using JavaScript inbuilt FETCH API</h1>
         <UserFilter
           userSearchTerm={userSearchTerm}
           onUserSearchChange={setUserSearchTerm}
         />
-        <UserList users={filteredUsers} /> */}
+        <UserList users={filteredUsers} />
       </main>
     </div>
   );
